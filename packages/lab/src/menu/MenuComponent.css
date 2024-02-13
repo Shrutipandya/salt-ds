@@ -1,4 +1,23 @@
-.saltMenuItem {
+.saltMenuComponent {
+  background: var(--salt-container-primary-background);
+  border: var(--salt-size-border) var(--salt-container-borderStyle) var(--salt-selectable-borderColor-selected);
+  overflow: hidden;
+  overflow-y: auto;
+  min-width: 10em;
+  z-index: var(--salt-zIndex-popout);
+}
+
+.saltMenuComponent-root {
+  background: transparent;
+  border: none;
+  color: var(--salt-content-primary-foreground);
+  font-family: var(--salt-typography-fontFamily);
+  font-size: var(--salt-text-fontSize);
+  letter-spacing: var(--salt-text-letterSpacing);
+  line-height: var(--salt-text-lineHeight);
+}
+
+.saltMenuComponent-item {
   color: var(--salt-text-primary-foreground);
   background: var(--salt-selectable-background);
   border: none;
@@ -18,29 +37,31 @@
   cursor: var(--salt-selectable-cursor-hover);
 }
 
-.saltMenuItem:not(:active):hover {
+.saltMenuComponent-item:not(:disabled):not(:active):hover {
   background: var(--salt-selectable-background-hover);
 }
 
-.saltMenuItem:not(.saltMenuItem-disabled):active {
+.saltMenuComponent-item:active {
   background: var(--salt-selectable-background-selected);
   border-color: var(--salt-selectable-borderColor-selected);
 }
 
-.saltMenuItem-disabled,
-.saltMenuItem.saltMenuItem-disabled:hover {
-  background: var(--salt-selectable-background);
+.saltMenuComponent-item:disabled {
   color: var(--salt-text-primary-foreground-disabled);
   cursor: var(--salt-selectable-cursor-disabled);
 }
 
-.saltMenuItem:focus-visible {
+.saltMenuComponent-root:focus-visible,
+.saltMenuComponent-item:focus-visible {
   background: var(--salt-selectable-background-hover);
   outline: var(--salt-focused-outline);
   outline-offset: calc(var(--salt-size-border) * -2);
 }
+.saltMenuComponent:focus-visible {
+  outline: none;
+}
 
-.saltMenuItem-content {
+.saltMenuComponent-item-content {
   display: flex;
   gap: var(--salt-spacing-100);
 }

@@ -1,4 +1,15 @@
-.saltMenuItem {
+.saltMenu {
+  background: transparent;
+  border: none;
+  color: var(--salt-content-primary-foreground);
+  font-family: var(--salt-typography-fontFamily);
+  font-size: var(--salt-text-fontSize);
+  letter-spacing: var(--salt-text-letterSpacing);
+  line-height: var(--salt-text-lineHeight);
+  display: block;
+}
+
+.saltMenu-item {
   color: var(--salt-text-primary-foreground);
   background: var(--salt-selectable-background);
   border: none;
@@ -18,29 +29,30 @@
   cursor: var(--salt-selectable-cursor-hover);
 }
 
-.saltMenuItem:not(:active):hover {
-  background: var(--salt-selectable-background-hover);
-}
-
-.saltMenuItem:not(.saltMenuItem-disabled):active {
-  background: var(--salt-selectable-background-selected);
-  border-color: var(--salt-selectable-borderColor-selected);
-}
-
-.saltMenuItem-disabled,
-.saltMenuItem.saltMenuItem-disabled:hover {
-  background: var(--salt-selectable-background);
-  color: var(--salt-text-primary-foreground-disabled);
-  cursor: var(--salt-selectable-cursor-disabled);
-}
-
-.saltMenuItem:focus-visible {
+.saltMenu-item:focus-visible {
   background: var(--salt-selectable-background-hover);
   outline: var(--salt-focused-outline);
   outline-offset: calc(var(--salt-size-border) * -2);
 }
 
-.saltMenuItem-content {
-  display: flex;
-  gap: var(--salt-spacing-100);
+.saltMenu-item:not(:active):hover {
+  background: var(--salt-selectable-background-hover);
+}
+
+.saltMenu-item:not(.saltMenu-item-disabled):active {
+  background: var(--salt-selectable-background-selected);
+  border-color: var(--salt-selectable-borderColor-selected);
+}
+
+.saltMenu-item-disabled,
+.saltMenu-item.saltMenu-item-disabled:hover {
+  background: var(--salt-selectable-background);
+  color: var(--salt-text-primary-foreground-disabled);
+  cursor: var(--salt-selectable-cursor-disabled);
+}
+
+.saltMenu-item:focus-visible {
+  background: var(--salt-selectable-background-hover);
+  outline: var(--salt-focused-outline);
+  outline-offset: calc(var(--salt-size-border) * -2);
 }

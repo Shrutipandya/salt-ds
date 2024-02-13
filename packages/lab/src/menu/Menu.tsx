@@ -1,75 +1,49 @@
-import {
-  ComponentPropsWithoutRef,
-  CSSProperties,
-  forwardRef,
-  SyntheticEvent,
-  useMemo,
-} from "react";
-import { MenuContext } from "./MenuContext";
-import { useControlled, useFloatingUI } from "@salt-ds/core";
-import { flip, offset, shift, limitShift, Placement } from "@floating-ui/react";
+import { useFloatingParentNodeId, FloatingTree } from "@floating-ui/react";
+import { forwardRef, HTMLProps, ReactNode } from "react";
+import { MenuComponent } from "./MenuComponent";
+import clsx from "clsx";
+import { makePrefixer } from "@salt-ds/core";
+import { useWindow } from "@salt-ds/window";
+import { useComponentCssInjection } from "@salt-ds/styles";
 
-export interface MenuProps extends ComponentPropsWithoutRef<"div"> {
-  open?: boolean;
-  defaultOpen?: boolean;
-  placement?: Placement;
-  onOpenChange?: (event: SyntheticEvent, newOpen: boolean) => void;
+import menuCss from "./Menu.css";
+const withBaseName = makePrefixer("saltMenu");
+export interface MenuProps {
+  label: ReactNode;
+  nested?: boolean;
+  children?: ReactNode;
 }
 
-export const Menu = forwardRef<HTMLDivElement, MenuProps>(function Menu(
-  props,
-  ref
-) {
-  const {
-    children,
-    defaultOpen,
-    open,
-    placement = "bottom-start",
-    onOpenChange,
-    ...rest
-  } = props;
-
-  const [openState, setOpenState] = useControlled({
-    controlled: open,
-    default: Boolean(defaultOpen),
-    name: "Menu",
-    state: "open",
+export const Menu = forwardRef<
+  HTMLDivElement,
+  MenuProps & HTMLProps<HTMLDivElement>
+>(function Menu({ className, ...restProps }, ref) {
+  const targetWindow = useWindow();
+  useComponentCssInjection({
+    testId: "salt-menu",
+    css: menuCss,
+    window: targetWindow,
   });
 
-  const setOpen = (event: SyntheticEvent, newOpen: boolean) => {
-    setOpenState(newOpen);
-    onOpenChange?.(event, newOpen);
-  };
+  const parentId = useFloatingParentNodeId();
 
-  const { context, x, y, strategy, elements, refs } = useFloatingUI({
-    open,
-    placement,
-    middleware: [offset(0), flip({}), shift({ limiter: limitShift() })],
-  });
-
-  const floatingStyles: CSSProperties = useMemo(() => {
+  if (parentId === null) {
     return (
-      elements.floating ? { position: strategy, top: y, left: x } : {}
-    ) as CSSProperties;
-  }, [elements.floating, strategy, x, y]);
+      <FloatingTree>
+        <MenuComponent
+          className={clsx(withBaseName(), withBaseName("item"), className)}
+          {...restProps}
+          ref={ref}
+        />
+      </FloatingTree>
+    );
+  }
 
   return (
-    <MenuContext.Provider
-      value={{
-        context,
-        openState,
-        setOpen,
-        strategy,
-        y,
-        x,
-        refs,
-        placement,
-        floatingStyles,
-      }}
-    >
-      <div ref={ref} {...rest}>
-        {children}
-      </div>
-    </MenuContext.Provider>
+    <MenuComponent
+      className={clsx(withBaseName(), withBaseName("item"), className)}
+      {...restProps}
+      ref={ref}
+    />
   );
 });

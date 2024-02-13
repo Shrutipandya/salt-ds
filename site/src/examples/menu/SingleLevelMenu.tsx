@@ -1,18 +1,12 @@
-import { Button } from "@salt-ds/core";
-import { Menu, MenuTrigger, MenuPanel, MenuItem } from "@salt-ds/lab";
+import { Menu, MenuItem } from "@salt-ds/lab";
 
 export const SingleLevelMenu = () => {
   return (
-    <Menu>
-      <MenuTrigger>
-        <Button>Click</Button>
-      </MenuTrigger>
-      <MenuPanel>
-        <MenuItem>One</MenuItem>
-        <MenuItem>Two</MenuItem>
-        <MenuItem>Three</MenuItem>
-        <MenuItem>Four</MenuItem>
-      </MenuPanel>
+    <Menu label="Click">
+      <MenuItem label="Copy" />
+      <MenuItem label="Paste" />
+      <MenuItem label="Export" />
+      <MenuItem label="Settings" />
     </Menu>
   );
 };

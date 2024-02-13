@@ -1,66 +1,70 @@
+import { useListItem, useFloatingTree, useMergeRefs } from "@floating-ui/react";
 import {
-  ComponentPropsWithoutRef,
   forwardRef,
-  ReactEventHandler,
-  SyntheticEvent,
-  KeyboardEvent,
+  ButtonHTMLAttributes,
+  MouseEvent,
+  FocusEvent,
+  ReactNode,
 } from "react";
-import { makePrefixer } from "@salt-ds/core";
+import { useMenuContext } from "./MenuContext";
 import { clsx } from "clsx";
+import { makePrefixer } from "@salt-ds/core";
 import { useWindow } from "@salt-ds/window";
 import { useComponentCssInjection } from "@salt-ds/styles";
-import { useMenuContext } from "./MenuContext";
 
 import menuItemCss from "./MenuItem.css";
-
 const withBaseName = makePrefixer("saltMenuItem");
 
-interface MenuItemProps extends ComponentPropsWithoutRef<"button"> {
-  onClick?: ReactEventHandler;
-  onKeyDown?: ReactEventHandler;
+interface MenuItemProps {
+  label: ReactNode;
   disabled?: boolean;
 }
 
-export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
-  function MenuItem(props, ref) {
-    const { children, className, onClick, onKeyDown, disabled, ...rest } =
-      props;
+export const MenuItem = forwardRef<
+  HTMLDivElement,
+  MenuItemProps & ButtonHTMLAttributes<HTMLDivElement>
+>(function MenuItem({ label, disabled, className, ...props }, forwardedRef) {
+  const menu = useMenuContext();
+  const item = useListItem({ label: disabled ? null : label?.toString() });
+  const tree = useFloatingTree();
+  const isActive = item.index === menu.activeIndex;
 
-    const { setOpen } = useMenuContext();
+  const targetWindow = useWindow();
+  useComponentCssInjection({
+    testId: "salt-menu-item",
+    css: menuItemCss,
+    window: targetWindow,
+  });
 
-    const targetWindow = useWindow();
-    useComponentCssInjection({
-      testId: "salt-menu-item",
-      css: menuItemCss,
-      window: targetWindow,
-    });
+  const itemProps = !disabled && {
+    ...menu.getItemProps({
+      onClick(event: MouseEvent<HTMLDivElement>) {
+        props.onClick?.(event);
+        tree?.events.emit("click");
+      },
+      onFocus(event: FocusEvent<HTMLDivElement>) {
+        props.onFocus?.(event);
+        menu.setHasFocusInside(true);
+      },
+    }),
+  };
 
-    const handleClick = (event: SyntheticEvent) => {
-      if (disabled) {
-        return;
-      }
-      setOpen(event, false);
-      onClick?.(event);
-    };
+  console.log("itemProps", label, { ...itemProps });
 
-    const handleOnKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
-        setOpen(event, false);
-      }
-      onKeyDown?.(event);
-    };
-    return (
-      <button
-        className={clsx(withBaseName(), className)}
-        ref={ref}
-        role="menuitem"
-        onClick={handleClick}
-        onKeyDown={handleOnKeyDown}
-        disabled={disabled}
-        {...rest}
-      >
-        {children}
-      </button>
-    );
-  }
-);
+  return (
+    <div
+      {...props}
+      ref={useMergeRefs([item.ref, forwardedRef])}
+      role="menuitem"
+      className={clsx(
+        withBaseName(),
+        { [withBaseName("disabled")]: disabled },
+        className
+      )}
+      tabIndex={isActive ? 0 : -1}
+      {...itemProps}
+    >
+      {label}
+    </div>
+  );
+});
