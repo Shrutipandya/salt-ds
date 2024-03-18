@@ -5429,6 +5429,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/graphql-schema@npm:^15.3.0":
+  version: 15.3.0
+  resolution: "@octokit/graphql-schema@npm:15.3.0"
+  dependencies:
+    graphql: "npm:^16.0.0"
+    graphql-tag: "npm:^2.10.3"
+  checksum: 10/800cf5498c209fd3724dd897626ec223be95221943044e582163692a8f1c1262f0cc728b473712c7eeca2675ee35eeeef92e56058f3b34b9f95c9fa21f1fa116
+  languageName: node
+  linkType: hard
+
 "@open-draft/until@npm:^1.0.3":
   version: 1.0.3
   resolution: "@open-draft/until@npm:1.0.3"
@@ -5917,6 +5927,7 @@ __metadata:
     "@jpmorganchase/mosaic-store": "npm:^0.1.0-beta.65"
     "@jpmorganchase/mosaic-theme": "npm:^0.1.0-beta.65"
     "@next/eslint-plugin-next": "npm:^14.0.4"
+    "@octokit/graphql-schema": "npm:^15.3.0"
     "@philpl/buble": "npm:^0.19.7"
     "@types/node": "npm:^16.0.0"
     "@types/react": "npm:^18.0.26"
@@ -5927,6 +5938,7 @@ __metadata:
     lodash-es: "npm:^4.17.21"
     next: "npm:^14.0.4"
     next-auth: "npm:^4.24.7"
+    node-fetch: "npm:^3.0.0"
     raw-loader: "npm:^4.0.2"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -17239,7 +17251,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.0.0 || ^16.0.0":
+"graphql-tag@npm:^2.10.3":
+  version: 2.12.6
+  resolution: "graphql-tag@npm:2.12.6"
+  dependencies:
+    tslib: "npm:^2.1.0"
+  peerDependencies:
+    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 10/23a2bc1d3fbeae86444204e0ac08522e09dc369559ba75768e47421a7321b59f352fb5b2c9a5c37d3cf6de890dca4e5ac47e740c7cc622e728572ecaa649089e
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^15.0.0 || ^16.0.0, graphql@npm:^16.0.0":
   version: 16.8.1
   resolution: "graphql@npm:16.8.1"
   checksum: 10/7a09d3ec5f75061afe2bd2421a2d53cf37273d2ecaad8f34febea1f1ac205dfec2834aec3419fa0a10fcc9fb345863b2f893562fb07ea825da2ae82f6392893c
@@ -23083,14 +23106,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:*":
-  version: 3.3.0
-  resolution: "node-fetch@npm:3.3.0"
+"node-fetch@npm:*, node-fetch@npm:^3.0.0":
+  version: 3.3.2
+  resolution: "node-fetch@npm:3.3.2"
   dependencies:
     data-uri-to-buffer: "npm:^4.0.0"
     fetch-blob: "npm:^3.1.4"
     formdata-polyfill: "npm:^4.0.10"
-  checksum: 10/3db05df0b5643dfb70973f82e27bc4fc1e2ce8a995e1f05bb4af88a0011f170406e84dce4ed7cd5a4c385145939c81795b4fc71bc6c9d659d5750cc82dee8bc4
+  checksum: 10/24207ca8c81231c7c59151840e3fded461d67a31cf3e3b3968e12201a42f89ce4a0b5fb7079b1fa0a4655957b1ca9257553200f03a9f668b45ebad265ca5593d
   languageName: node
   linkType: hard
 
