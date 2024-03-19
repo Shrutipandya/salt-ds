@@ -18,7 +18,6 @@ import { ChevronDownIcon, ChevronUpIcon } from "@salt-ds/icons";
 import {
   makePrefixer,
   StatusAdornment,
-  useFloatingComponent,
   useFloatingUI,
   UseFloatingUIProps,
   useForkRef,
@@ -189,8 +188,6 @@ export const DropdownNext = forwardRef(function DropdownNext<Item>(
   const valueText = isEmptyReadOnly
     ? emptyReadOnlyMarker
     : value ?? selectedValue;
-
-  const { Component: FloatingComponent } = useFloatingComponent();
 
   const handleOpenChange: UseFloatingUIProps["onOpenChange"] = (
     newOpen,
@@ -398,6 +395,7 @@ export const DropdownNext = forwardRef(function DropdownNext<Item>(
   }, [openState, children]);
 
   const listId = useId();
+  const handleListRef = useForkRef<HTMLDivElement>(listRef, floating);
 
   return (
     <ListControlContext.Provider value={listControl}>
@@ -443,27 +441,24 @@ export const DropdownNext = forwardRef(function DropdownNext<Item>(
         {validationStatus && <StatusAdornment status={validationStatus} />}
         {!readOnly && <ExpandIcon open={openState} />}
       </button>
-      <FloatingComponent
+      <OptionList
         open={(openState || focusedState) && !readOnly && children != undefined}
-        {...getFloatingProps()}
         left={x ?? 0}
         top={y ?? 0}
         position={strategy}
         width={elements.floating?.offsetWidth}
         height={elements.floating?.offsetHeight}
-        ref={floating}
+        ref={handleListRef}
+        id={listId}
+        collapsed={!openState}
+        {...getFloatingProps({
+          onMouseOver: handleListMouseOver,
+          onFocus: handleFocusButton,
+          onClick: handleFocusButton,
+        })}
       >
-        <OptionList
-          id={listId}
-          collapsed={!openState}
-          onMouseOver={handleListMouseOver}
-          onFocus={handleFocusButton}
-          onClick={handleFocusButton}
-          ref={listRef}
-        >
-          {children}
-        </OptionList>
-      </FloatingComponent>
+        {children}
+      </OptionList>
     </ListControlContext.Provider>
   );
 }) as <Item = string>(
