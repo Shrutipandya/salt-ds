@@ -4,6 +4,7 @@ import {
   KeyboardEvent,
   ComponentPropsWithoutRef,
   SyntheticEvent,
+  ChangeEvent,
 } from "react";
 import { clsx } from "clsx";
 import { useWindow } from "@salt-ds/window";
@@ -18,7 +19,8 @@ import {
 
 const withBaseName = makePrefixer("saltInteractableCard");
 
-export interface InteractableCardProps extends ComponentPropsWithoutRef<"div"> {
+export interface InteractableCardProps
+  extends ComponentPropsWithoutRef<"input"> {
   /**
    * Accent border position: defaults to "bottom"
    */
@@ -35,7 +37,7 @@ export interface InteractableCardProps extends ComponentPropsWithoutRef<"div"> {
    * Callback fired when the selection changes.
    * @param event
    */
-  onChange?: (event: SyntheticEvent<HTMLDivElement>) => void;
+  onChange?: (event: SyntheticEvent<HTMLInputElement>) => void;
   /**
    * Styling variant; defaults to "primary".
    */
@@ -47,7 +49,7 @@ export interface InteractableCardProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 export const InteractableCard = forwardRef<
-  HTMLDivElement,
+  HTMLInputElement,
   InteractableCardProps
 >(function InteractableCard(props, ref) {
   const {
@@ -97,19 +99,19 @@ export const InteractableCard = forwardRef<
   const ariaChecked =
     role === "radio" || role === "checkbox" ? selected : undefined;
 
-  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (interactableCardGroup) {
-      interactableCardGroup.select(event, value);
+      interactableCardGroup.select(event);
       setSelected(!selected);
     }
     onChange?.(event);
-    onClick?.(event);
+    // onClick?.(event);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       if (interactableCardGroup) {
-        interactableCardGroup.select(event, value);
+        interactableCardGroup.select(event);
         setSelected(!selected);
       }
       onChange?.(event);
@@ -117,19 +119,17 @@ export const InteractableCard = forwardRef<
     }
   };
 
-  const { active, cardProps } = useInteractableCard({
-    disabled,
-    onKeyUp,
-    onKeyDown: handleKeyDown,
-    onBlur,
-    onClick,
-  });
+  // const { active, cardProps } = useInteractableCard({
+  //   disabled,
+  //   onKeyUp,
+  //   onKeyDown: handleKeyDown,
+  //   onBlur,
+  //   onClick,
+  // });
 
   return (
     <div
-      {...cardProps}
-      role={role}
-      aria-checked={ariaChecked}
+      // {...cardProps}
       data-id={value}
       aria-disabled={disabled}
       data-value={value}
@@ -139,16 +139,25 @@ export const InteractableCard = forwardRef<
         {
           [withBaseName("accent")]: accent,
           [withBaseName(`accent${capitalize(accent || "")}`)]: accent,
-          [withBaseName("active")]: active,
+          // [withBaseName("active")]: active,
           [withBaseName("disabled")]: disabled,
           [withBaseName("selected")]: selected,
         },
         className
       )}
       {...rest}
-      onClick={interactableCardGroup ? handleClick : onClick}
-      ref={ref}
     >
+      <input
+        type={role}
+        checked={ariaChecked}
+        onChange={interactableCardGroup ? handleClick : onClick}
+        onKeyDown={handleKeyDown}
+        disabled={disabled}
+        value={value}
+        aria-checked={selected}
+        style={{ display: "none" }} // Hide the input visually but keep it in the DOM for accessibility
+        ref={ref}
+      />
       {children}
     </div>
   );

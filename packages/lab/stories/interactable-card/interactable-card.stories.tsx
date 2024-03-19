@@ -238,8 +238,8 @@ export const InteractableCardGroupRadio: StoryFn<typeof InteractableCard> = (
         <Text>Choose your payment method from the options below.</Text>
       </StackLayout>
       <InteractableCardGroup
-        onChange={(_event, value) => {
-          setSelected(value);
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          setSelected(event.target.value);
         }}
       >
         <InteractableCard {...args} value="card" style={{ width: "180px" }}>
@@ -290,8 +290,8 @@ export const InteractableCardGroupCheckbox: StoryFn<typeof InteractableCard> = (
 
   return (
     <InteractableCardGroup
-      onChange={(_event, value) => {
-        setSelected(value);
+      onChange={(event: ChangeEvent<HTMLInputElement>) => {
+        setSelected(event.target.value);
       }}
       selectionVariant="multiselect"
     >

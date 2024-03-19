@@ -1,4 +1,6 @@
 import {
+  ChangeEvent,
+  ChangeEventHandler,
   ComponentPropsWithoutRef,
   forwardRef,
   SyntheticEvent,
@@ -19,7 +21,7 @@ import {
 import interactableCardGroupCss from "./InteractableCardGroup.css";
 
 export interface InteractableCardGroupProps
-  extends Omit<ComponentPropsWithoutRef<"div">, "onChange"> {
+  extends Omit<ComponentPropsWithoutRef<"fieldset">, "onChange"> {
   /**
    * The default value. Use when the component is not controlled. Should be an array when `selectionVariant` is "multiselect".
    */
@@ -40,16 +42,13 @@ export interface InteractableCardGroupProps
    * Callback fired when the selection changes.
    * @param event
    */
-  onChange?: (
-    event: SyntheticEvent<HTMLDivElement>,
-    value: InteractableCardValue
-  ) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const withBaseName = makePrefixer("saltInteractableCardGroup");
 
 export const InteractableCardGroup = forwardRef<
-  HTMLDivElement,
+  HTMLFieldSetElement,
   InteractableCardGroupProps
 >(function InteractableCardGroup(props, ref) {
   const {
@@ -70,7 +69,7 @@ export const InteractableCardGroup = forwardRef<
     window: targetWindow,
   });
 
-  const groupRef = useRef<HTMLDivElement>(null);
+  const groupRef = useRef<HTMLFieldSetElement>(null);
   const handleRef = useForkRef(ref, groupRef);
 
   const [value, setValue] = useControlled({
@@ -81,10 +80,8 @@ export const InteractableCardGroup = forwardRef<
   });
 
   const select = useCallback(
-    (
-      event: SyntheticEvent<HTMLDivElement>,
-      newValue: InteractableCardValue
-    ) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value;
       if (selectionVariant === "multiselect") {
         const currentValues = Array.isArray(value) ? value : [];
         const isSelected = currentValues.includes(newValue);
@@ -94,11 +91,11 @@ export const InteractableCardGroup = forwardRef<
           : [...currentValues, newValue];
 
         setValue(next);
-        onChange?.(event, next);
+        onChange?.(event);
       } else {
         setValue(newValue);
         if (value !== newValue) {
-          onChange?.(event, newValue);
+          onChange?.(event);
         }
       }
     },
@@ -125,14 +122,14 @@ export const InteractableCardGroup = forwardRef<
 
   return (
     <InteractableCardGroupContext.Provider value={contextValue}>
-      <div
+      <fieldset
         className={clsx(withBaseName(), className)}
         role={selectionVariant === "multiselect" ? "group" : "radiogroup"}
         ref={handleRef}
         {...rest}
       >
         {children}
-      </div>
+      </fieldset>
     </InteractableCardGroupContext.Provider>
   );
 });
