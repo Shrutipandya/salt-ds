@@ -55,7 +55,6 @@ function addToJson(key, themeLevel, semantic, tokenName, type, tokenValue) {
  **/
 function formatFoundationValue(semantic, tokenValue) {
   const alias = removePrefix(stripVarFunc(tokenValue));
-  console.log(semantic, alias);
   let foundationSemantic;
   switch (semantic) {
     case "corner":
