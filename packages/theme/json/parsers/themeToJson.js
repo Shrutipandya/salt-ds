@@ -264,9 +264,6 @@ function format(variables) {
         if (tokenParts.find((part) => part === "textTransform")) {
           type = "textTransform";
         }
-        if (tokenParts.find((part) => part === "fontStyle")) {
-          type = "fontStyle";
-        }
         if (tokenParts.find((part) => part === "fontWeight")) {
           // Do we want to group text e.g. h1, h2?
           type = "fontWeight";
@@ -313,12 +310,20 @@ function themeToJson() {
   const foundationVariables = fromDir(
     path.resolve(__dirname, "../../css/foundations")
   );
-  const characteristicVariables = fromFile(
+  let characteristicVariables = fromFile(
     path.resolve(
       __dirname,
       "../../css/characteristics/characteristics-next.css"
     )
   );
+  let characteristicsNonColors = fromDir(
+    path.resolve(__dirname, "../../css/characteristics"),
+    true
+  );
+  characteristicVariables = {
+    ...characteristicVariables,
+    ...characteristicsNonColors,
+  };
   format({
     $light: {
       ...paletteVariables.light,
