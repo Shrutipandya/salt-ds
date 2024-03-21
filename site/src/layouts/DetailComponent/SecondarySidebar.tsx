@@ -83,9 +83,9 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
       )
     );
   };
-  
+
   type CustomSiteState = SiteState & { data?: Data };
-  
+
   function getHrefFromComponent(component: string) {
     // Multiline Input -> multiline-input
     // Input -> input
@@ -94,7 +94,7 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
     return `/salt/patterns/${tag}`;
   }
 
-  const relatedPatterns = 
+  const relatedPatterns =
     useStore((state: CustomSiteState) => state.data?.relatedPatterns) ?? [];
 
   if (relatedPatterns.length > 0) {
