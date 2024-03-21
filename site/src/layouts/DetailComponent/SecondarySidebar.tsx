@@ -94,10 +94,8 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
     return `/salt/patterns/${tag}`;
   }
 
-  const relatedPatterns =
-    useStore((state: CustomSiteState) => state.data?.relatedPatterns) ?? [];
 
-  if (relatedPatterns.length > 0) {
+  if (relatedPatterns?.length > 0) {
     return (
       <section className={styles.list}>
         <Heading4>Related patterns</Heading4>
