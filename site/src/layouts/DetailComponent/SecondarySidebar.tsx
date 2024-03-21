@@ -37,6 +37,7 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
   const {
     alsoKnownAs,
     relatedComponents,
+    relatedPatterns,
     sourceCodeUrl,
     stickerSheet,
     bugReport,
@@ -82,10 +83,6 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
       )
     );
   };
-
-  type Data = {
-    relatedPatterns: string[];
-  };
   
   type CustomSiteState = SiteState & { data?: Data };
   
@@ -102,7 +99,7 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
 
   if (relatedPatterns.length > 0) {
     return (
-      <section className={styles.root}>
+      <section className={styles.list}>
         <Heading4>Related patterns</Heading4>
         <ul className={styles.list}>
           {relatedPatterns

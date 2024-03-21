@@ -46,6 +46,7 @@ export interface Data {
   description: string;
   alsoKnownAs: string[];
   relatedComponents: RelatedComponent[];
+  relatedPattern: string[];
   sourceCodeUrl: string;
   package: ComponentNpmInfo;
   stickerSheet?: string;
