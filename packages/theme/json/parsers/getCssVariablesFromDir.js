@@ -17,14 +17,6 @@ const darkModeNextRegex =
   /\.salt-theme-next\[data-mode="dark"\].*?\{(.*?)\}.*?/s;
 const generalThemeNextRegex = /\.salt-theme-next.\{(.*?)\}.*?/s;
 
-const cssVariables = {};
-const lightModeVariables = {};
-const darkModeVariables = {};
-const hdVariables = {};
-const mdVariables = {};
-const ldVariables = {};
-const tdVariables = {};
-
 function isNonColor(token) {
   const tokenParts = token.split("-");
   const isColor = tokenParts.find((part) =>
@@ -39,7 +31,19 @@ function isNonColor(token) {
   return !isColor;
 }
 
-function processFile(filePath, nonColors) {
+function processFile(
+  filePath,
+  {
+    cssVariables,
+    lightModeVariables,
+    darkModeVariables,
+    hdVariables,
+    mdVariables,
+    ldVariables,
+    tdVariables,
+  },
+  nonColors
+) {
   // Process CSS files
   const cssContent = fs.readFileSync(filePath, "utf8");
 
@@ -167,9 +171,25 @@ function processFile(filePath, nonColors) {
 
 module.exports = {
   fromFile: function getCssVariablesFromFile(filePath) {
+    const cssVariables = {};
+    const lightModeVariables = {};
+    const darkModeVariables = {};
+    const hdVariables = {};
+    const mdVariables = {};
+    const ldVariables = {};
+    const tdVariables = {};
+
     const stats = fs.statSync(filePath);
     if (stats.isFile() && path.extname(filePath) === ".css") {
-      processFile(filePath);
+      processFile(filePath, {
+        cssVariables,
+        lightModeVariables,
+        darkModeVariables,
+        hdVariables,
+        mdVariables,
+        ldVariables,
+        tdVariables,
+      });
     }
 
     return {
@@ -183,6 +203,13 @@ module.exports = {
     };
   },
   fromDir: function getCssVariablesFromDir(dirPath, nonColors) {
+    const cssVariables = {};
+    const lightModeVariables = {};
+    const darkModeVariables = {};
+    const hdVariables = {};
+    const mdVariables = {};
+    const ldVariables = {};
+    const tdVariables = {};
     const files = fs.readdirSync(dirPath);
     const foundations = files.map((file) => file.replace(".css", ""));
     files.forEach((file) => {
@@ -199,7 +226,19 @@ module.exports = {
         !foundations.includes(`${fileName}-next`) &&
         fileName !== "fade"
       ) {
-        processFile(filePath, nonColors);
+        processFile(
+          filePath,
+          {
+            cssVariables,
+            lightModeVariables,
+            darkModeVariables,
+            hdVariables,
+            mdVariables,
+            ldVariables,
+            tdVariables,
+          },
+          nonColors
+        );
       }
     });
 
