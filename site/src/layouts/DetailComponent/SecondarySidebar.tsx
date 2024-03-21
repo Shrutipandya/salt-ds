@@ -94,7 +94,7 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
     return `/salt/patterns/${tag}`;
   }
 
-  if (relatedPatterns?.length > 0) {
+  if (Array.isArray(relatedPatterns) && relatedPatterns.length > 0) {
     return (
       <section className={styles.list}>
         <Heading4>Related patterns</Heading4>
