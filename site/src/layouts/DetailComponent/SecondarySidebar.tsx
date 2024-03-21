@@ -94,7 +94,6 @@ const SecondarySidebar: FC<SecondarySidebarProps> = ({
     return `/salt/patterns/${tag}`;
   }
 
-
   if (relatedPatterns?.length > 0) {
     return (
       <section className={styles.list}>
