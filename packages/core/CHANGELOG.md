@@ -1,5 +1,18 @@
 # @salt-ds/core
 
+## 1.22.1
+
+### Patch Changes
+
+- a726afcf: Improved the accessibility of Switch by applying `role="switch"`.
+
+  **Note:** This might affect tests where you are targeting Switch by its role. For example, using React Testing Library-based selectors, tests will have to be updated like the following:
+
+  ```diff
+  - getByRole("checkbox")
+  + getByRole("switch")
+  ```
+
 ## 1.22.0
 
 ### Minor Changes
